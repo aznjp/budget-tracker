@@ -23,6 +23,7 @@ self.addEventListener('install', function(evt) {
 });
 
 // Activate the service worker and remove old data from the cache
+// If files wont work try to clear the storage first because previous versions may be interfering with the information as shown
 self.addEventListener('activate', function(evt) {
     evt.waitUntil(
         caches
@@ -68,17 +69,4 @@ self.addEventListener('fetch', function(evt) {
 
         return;
     }
-
-    // evt.respondWith(
-    //     fetch(evt.request).catch(function() {
-    //         return caches.match(evt.request).then(function(response) {
-    //             if (response) {
-    //                 return response;
-    //             } else if (evt.request.headers.get('accept').includes('text/html')) {
-    //                 // return the cached home page for all requests for html pages
-    //                 return caches.match('/');
-    //             }
-    //         });
-    //     })
-    // );
 });

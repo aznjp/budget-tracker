@@ -32,13 +32,16 @@ request.onerror = function(event) {
 
 // This function will be executed if we attempt to submit a budget and there's no internet connection
 function saveRecord(record) {
-    // open a new transaction with the database with read and write permissions 
+    // open a new transaction with the database with read and write permissions
     const transaction = db.transaction(['pending'], 'readwrite');
 
     // access the object store for `pending`
     const budgetObjectStore = transaction.objectStore('pending');
 
     // add record to your store with add method.
+    // Double check to ensure that it is first going to this pending table in the database on application when offline
+    /* In the case you do not see this info first passing through the pending table when in offline then something must be wrong
+    with inline or off-line keys that you defined above*/
     budgetObjectStore.add(record);
 }
 
@@ -51,7 +54,7 @@ function checkDatabase() {
 
     // get all records from the store and set them to a variable
     const getAll = budgetObjectStore.getAll();
-
+    // Once you are back online this post method should grab all of that information from the temporary storage and place that into the cache thereafter
     getAll.onsuccess = function() {
         if (getAll.result.length > 0) {
             fetch('/api/transaction/', {
@@ -68,6 +71,7 @@ function checkDatabase() {
                         throw new Error(serverResponse);
                     }
                     // Once the response has passed it will open up the store once more and clear it out
+                    // Double check to ensure that all of the information is gone from the table once you go back on offline *REFRESH IN APPLICATION*
                     const transaction = db.transaction(['pending'], 'readwrite');
                     const budgetObjectStore = transaction.objectStore('pending');
                     budgetObjectStore.clear();
@@ -81,5 +85,5 @@ function checkDatabase() {
     }
 }
 
-// listen for app coming back online
+// listen for app coming back online and will implement checkdatabase function
 window.addEventListener('online', checkDatabase);

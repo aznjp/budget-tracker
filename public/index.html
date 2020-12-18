@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="icons/icon-192x192.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/styles.css" />
+    <!-- Include manifest JSON files to tell browser how the PWA should behave and what it should be called -->
     <link rel="manifest" href="./manifest.json" />
 
     <title>Budget Tracker</title>
@@ -46,6 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="js/index.js"></script>
     <script src="js/idb.js"></script>
+    <!-- Code will start the serviceWorker for the application -->
     <script type="text/javascript">
         (function() {
             if ('serviceWorker' in navigator) {
